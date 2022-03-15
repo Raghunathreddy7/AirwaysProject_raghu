@@ -1,0 +1,105 @@
+1. Add New user Stored_Procedure
+
+CREATE PROCEDURE [dbo].[AddNewUser]
+	@PassportNo varchar(20),
+	@Name varchar(20),
+	@emailId varchar(20),
+
+	@Passwd varchar(20)
+AS
+	insert into loginData values(@PassportNo,@Name,@emailId,@Passwd);
+RETURN 0
+---------------------------------------------------------------------------------------------
+
+2. Booking status  
+CREATE PROCEDURE [dbo].[BookingStatus]
+	@PNRno Varchar(10)
+AS
+	SELECT flightId,PassportNo,Total_Tickets,Total_Amount from CreditCard where PNRno=@PNRno; 
+RETURN 0
+
+-------------------------------------------------------------------------------------------
+
+3.Cancel Ticket Procedure
+
+
+CREATE PROCEDURE [dbo].[CancelTicket]
+	@PNRno varchar(10)
+AS
+	Delete from CreditCard where PNRno= @PNRno;
+RETURN 0
+--------------------------------------------------------------------------------------------
+
+4.Change_flight_details
+
+CREATE PROCEDURE [dbo].[Change_flight_details]
+	@flightId varchar(10),
+	@TravelTime varchar(10),
+	@price int
+AS
+	Update flight set TravelTime=@TravelTime,price=@price where flightId=@flightId;
+RETURN 0
+--------------------------------------------------------------------------------------------
+
+5.CreditCardDetails
+
+
+CREATE PROCEDURE [dbo].[CreditCardDetails]
+	@flightId varchar(10),
+	@passportNo varchar(20),
+	@Cardnumber bigint,
+	@expDate varchar(10),
+	@CVV int,
+	@Total_tickets int,
+	@Total_Amount int,
+	@PNRno Varchar(10)
+AS
+	insert into CreditCard values(@flightId,@passportNo,@Cardnumber,@expDate,@CVV,@Total_tickets,@Total_Amount,@PNRno)
+RETURN 0
+---------------------------------------------------------------------------------------------------
+6.flightBooking
+
+CREATE PROCEDURE [dbo].[flightBooking]
+	@origin varchar(10),
+	@Destination varchar(10)
+AS
+	SELECT * from flight where origin=@origin And Destination=@Destination 
+
+RETURN 0
+----------------------------------------------------------------------------------------------------
+7.Refund
+
+CREATE PROCEDURE [dbo].[Refund]
+	@PNRno varchar(10)
+AS
+	SELECT flightId,Total_Amount,Total_tickets from CreditCard where PNRno=@PNRno;
+RETURN 0
+
+------------------------------------------------------------------------------------------------
+
+8.Total_seats
+CREATE PROCEDURE [dbo].[Total_seats]
+	@flightId varchar(10),
+	@pt int
+AS
+	Update flight Set AvailbleSeats=AvailbleSeats-@pt where flightId=@flightId;
+RETURN 0
+------------------------------------------------------------------
+
+9.UpdateCancelTickets
+CREATE PROCEDURE [dbo].[UpdateCancelTickets]
+	@flightId varchar(10),
+	@UPT int
+AS
+	update flight Set AvailbleSeats=AvailbleSeats+@UPT where flightId=@flightId;
+RETURN 0
+--------------------------------------------------------------------
+
+10.VerifyAdmin
+
+CREATE PROCEDURE [dbo].[VerifyAdmin]
+	@AdminId varchar(10),
+	@AdminPassword varchar(10)
+AS
+	SELECT * from adminTable where AdminId=@AdminId And AdminPassword=@AdminPassword;
+RETURN 0
